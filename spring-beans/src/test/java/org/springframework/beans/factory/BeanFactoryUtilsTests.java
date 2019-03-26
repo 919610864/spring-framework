@@ -26,13 +26,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.cglib.proxy.NoOp;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.tests.sample.beans.AnnotatedBean;
-import org.springframework.tests.sample.beans.ITestBean;
-import org.springframework.tests.sample.beans.IndexedTestBean;
-import org.springframework.tests.sample.beans.TestAnnotation;
-import org.springframework.tests.sample.beans.TestBean;
+import org.springframework.tests.sample.beans.*;
 import org.springframework.tests.sample.beans.factory.DummyFactory;
 import org.springframework.util.ObjectUtils;
 
@@ -58,7 +56,7 @@ public class BeanFactoryUtilsTests {
 	private DefaultListableBeanFactory dependentBeansFactory;
 
 
-	@Before
+	//@Before
 	public void setUp() {
 		// Interesting hierarchical factory to test counts.
 		// Slow to read so we cache it.
@@ -74,6 +72,14 @@ public class BeanFactoryUtilsTests {
 		new XmlBeanDefinitionReader(this.dependentBeansFactory).loadBeanDefinitions(DEPENDENT_BEANS_CONTEXT);
 		dependentBeansFactory.preInstantiateSingletons();
 		this.listableBeanFactory = child;
+	}
+
+	@Test
+	public void testBeanFactory(){
+
+		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
+		MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
+		assertEquals("testStr",myTestBean.getTestStr());
 	}
 
 
