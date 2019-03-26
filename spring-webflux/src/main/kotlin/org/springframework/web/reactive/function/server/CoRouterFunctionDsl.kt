@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -395,6 +395,9 @@ open class CoRouterFunctionDsl(private val init: (CoRouterFunctionDsl.() -> Unit
         }
     }
 
+	/**
+	 * Return a composed routing function created from all the registered routes.
+	 */
     override fun invoke(): RouterFunction<ServerResponse> {
         init()
         return builder.build()
@@ -475,6 +478,9 @@ open class CoRouterFunctionDsl(private val init: (CoRouterFunctionDsl.() -> Unit
 
 }
 
+/**
+ * Equivalent to [RouterFunction.and].
+ */
 operator fun <T: ServerResponse> RouterFunction<T>.plus(other: RouterFunction<T>) =
         this.and(other)
 

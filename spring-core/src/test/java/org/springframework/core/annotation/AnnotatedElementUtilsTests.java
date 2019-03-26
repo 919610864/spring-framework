@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,9 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -43,6 +41,7 @@ import org.springframework.util.MultiValueMap;
 
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.core.annotation.AnnotatedElementUtils.*;
@@ -459,7 +458,9 @@ public class AnnotatedElementUtilsTests {
 		exception.expectMessage(either(
 				containsString("values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]")).or(
 				containsString("values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
+		exception.expectMessage(either(
+				containsString("but only one is permitted")).or(
+				containsString("Different @AliasFor mirror values for annotation")));
 		getMergedAnnotationAttributes(element, ContextConfig.class);
 	}
 
@@ -699,16 +700,11 @@ public class AnnotatedElementUtilsTests {
 	}
 
 	@Test
-	public void javaLangAnnotationTypeViaFindMergedAnnotation() throws Exception {
-		Constructor<?> deprecatedCtor = Date.class.getConstructor(String.class);
-		assertEquals(deprecatedCtor.getAnnotation(Deprecated.class), findMergedAnnotation(deprecatedCtor, Deprecated.class));
-		assertEquals(Date.class.getAnnotation(Deprecated.class), findMergedAnnotation(Date.class, Deprecated.class));
-	}
-
-	@Test
 	public void javaxAnnotationTypeViaFindMergedAnnotation() throws Exception {
-		assertEquals(ResourceHolder.class.getAnnotation(Resource.class), findMergedAnnotation(ResourceHolder.class, Resource.class));
-		assertEquals(SpringAppConfigClass.class.getAnnotation(Resource.class), findMergedAnnotation(SpringAppConfigClass.class, Resource.class));
+		assertEquals(ResourceHolder.class.getAnnotation(Resource.class),
+				findMergedAnnotation(ResourceHolder.class, Resource.class));
+		assertEquals(SpringAppConfigClass.class.getAnnotation(Resource.class),
+				findMergedAnnotation(SpringAppConfigClass.class, Resource.class));
 	}
 
 	@Test
@@ -739,6 +735,15 @@ public class AnnotatedElementUtilsTests {
 		assertNotNull(order);
 	}
 
+	@Test // gh-22655
+	public void forAnnotationsCreatesCopyOfArrayOnEachCall() {
+		AnnotatedElement element = AnnotatedElementUtils.forAnnotations(ForAnnotationsClass.class.getDeclaredAnnotations());
+		// Trigger the NPE as originally reported in the bug
+		AnnotationsScanner.getDeclaredAnnotations(element, false);
+		AnnotationsScanner.getDeclaredAnnotations(element, false);
+		// Also specifically test we get different instances
+		assertThat(element.getDeclaredAnnotations()).isNotSameAs(element.getDeclaredAnnotations());
+	}
 
 	// -------------------------------------------------------------------------
 
@@ -1302,6 +1307,12 @@ public class AnnotatedElementUtilsTests {
 		@Override
 		public void doIt() {
 		}
+	}
+
+	@Deprecated
+	@ComponentScan
+	class ForAnnotationsClass {
+
 	}
 
 }

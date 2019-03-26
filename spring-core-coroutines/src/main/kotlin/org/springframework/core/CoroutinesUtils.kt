@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package org.springframework.web.reactive.result.method
+@file:JvmName("CoroutinesUtils")
+package org.springframework.core
 
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.reactive.awaitFirstOrNull
+
 import kotlinx.coroutines.reactor.mono
+import reactor.core.publisher.Mono
 import reactor.core.publisher.onErrorMap
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -25,7 +31,23 @@ import kotlin.reflect.full.callSuspend
 import kotlin.reflect.jvm.kotlinFunction
 
 /**
- * Invoke an handler method converting suspending method to {@link Mono} if necessary.
+ * Convert a [Deferred] instance to a [Mono] one.
+ *
+ * @author Sebastien Deleuze
+ * @since 5.2
+ */
+internal fun <T: Any> deferredToMono(source: Deferred<T>) = GlobalScope.mono { source.await() }
+
+/**
+ * Convert a [Mono] instance to a [Deferred] one.
+ *
+ * @author Sebastien Deleuze
+ * @since 5.2
+ */
+internal fun <T: Any> monoToDeferred(source: Mono<T>) = GlobalScope.async { source.awaitFirstOrNull() }
+
+/**
+ * Invoke an handler method converting suspending method to [Mono] if necessary.
  *
  * @author Sebastien Deleuze
  * @since 5.2
