@@ -154,10 +154,14 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	@Override
 	@Nullable
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		//方法引用点
 		MethodInvocation invocation;
+		//旧的代理
 		Object oldProxy = null;
+		//设置代理上下文
 		boolean setProxyContext = false;
 
+		//原目标对象
 		TargetSource targetSource = this.advised.targetSource;
 		Object target = null;
 
@@ -193,7 +197,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			target = targetSource.getTarget();
 			Class<?> targetClass = (target != null ? target.getClass() : null);
 
-			// Get the interception chain for this method.
+			// Get the interception chain for this method.(为这个方法活的一个拦截链)
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct

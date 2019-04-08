@@ -30,6 +30,7 @@ public class CountingBeforeAdvice extends MethodCounter implements MethodBeforeA
 
 	@Override
 	public void before(Method m, Object[] args, Object target) throws Throwable {
+		System.out.println("come in before");
 		count(m);
 	}
 

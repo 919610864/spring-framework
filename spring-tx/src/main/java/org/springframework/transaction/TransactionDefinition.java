@@ -41,7 +41,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.support.DefaultTransactionDefinition
  * @see org.springframework.transaction.interceptor.TransactionAttribute
  */
-public interface TransactionDefinition {
+public interface  TransactionDefinition {
 
 	/**
 	 * Support a current transaction; create a new one if none exists.

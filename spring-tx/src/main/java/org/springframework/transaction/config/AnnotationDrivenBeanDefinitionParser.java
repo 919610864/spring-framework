@@ -61,6 +61,7 @@ class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
 		registerTransactionalEventListenerFactory(parserContext);
+		//<tx:annotation driven transaction manager＝”transactionManager” mode＝”aspectj” ／〉
 		String mode = element.getAttribute("mode");
 		if ("aspectj".equals(mode)) {
 			// mode="aspectj"

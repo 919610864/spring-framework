@@ -64,10 +64,13 @@ class OverloadedAdviceTestAspect {
 
 	public void myBeforeAdvice(String name) {
 		// no-op
+		System.out.println("myBeforeAdvice : name"+ name);
 	}
 
 	public void myBeforeAdvice(int age) {
 		// no-op
+		System.out.println("myBeforeAdvice : age"+ age);
+
 	}
 }
 

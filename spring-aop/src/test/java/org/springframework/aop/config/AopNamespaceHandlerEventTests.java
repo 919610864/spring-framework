@@ -63,6 +63,11 @@ public class AopNamespaceHandlerEventTests {
 	}
 
 
+	/**
+	 *<aop:config>
+	 * 		<aop:pointcut id="myPointcut" expression="within(org.springframework..*)"/>
+	 * 	</aop:config>
+	 */
 	@Test
 	public void testPointcutEvents() {
 		this.reader.loadBeanDefinitions(POINTCUT_EVENTS_CONTEXT);
