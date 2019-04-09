@@ -532,7 +532,9 @@ public abstract class ClassUtils {
 		if (lhsType.isAssignableFrom(rhsType)) {
 			return true;
 		}
+		//判断lhsType是否为基本类型数据
 		if (lhsType.isPrimitive()) {
+			//根据包装类型获取原始类型数据
 			Class<?> resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
 			if (lhsType == resolvedPrimitive) {
 				return true;

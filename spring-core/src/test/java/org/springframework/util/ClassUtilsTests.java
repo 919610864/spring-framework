@@ -60,8 +60,8 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testIsPresent() {
-		assertTrue(ClassUtils.isPresent("java.lang.String", classLoader));
-		assertFalse(ClassUtils.isPresent("java.lang.MySpecialString", classLoader));
+		assertTrue(ClassUtils.isPresent("java.lang.String", null));
+		assertFalse(ClassUtils.isPresent("org.springframework.tests.sample.objects.TestObject1", classLoader));
 	}
 
 	@Test
