@@ -36,7 +36,7 @@ import org.springframework.test.context.junit4.rules.BasicAnnotationConfigWacSpr
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.web.RequestAndSessionScopedBeansWacTests;
-import org.springframework.test.context.web.socket.WebSocketServletServerContainerFactoryBeanTests;
+//import org.springframework.test.context.web.socket.WebSocketServletServerContainerFactoryBeanTests;
 import org.springframework.test.web.client.samples.SampleTests;
 import org.springframework.test.web.servlet.samples.context.JavaConfigTests;
 import org.springframework.test.web.servlet.samples.context.WebAppResourceTests;
@@ -87,7 +87,7 @@ public class SpringJUnit4ConcurrencyTests {
 			DispatcherWacRootWacEarTests.class,
 			BasicAnnotationConfigWacSpringRuleTests.class,
 			RequestAndSessionScopedBeansWacTests.class,
-			WebSocketServletServerContainerFactoryBeanTests.class,
+			//WebSocketServletServerContainerFactoryBeanTests.class,
 		// Spring MVC Test
 			JavaConfigTests.class,
 			WebAppResourceTests.class,
