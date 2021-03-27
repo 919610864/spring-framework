@@ -10,12 +10,12 @@ import org.springframework.context.ApplicationContextAware;
 public class BeanLifecycle implements BeanNameAware, InitializingBean, DisposableBean, ApplicationContextAware {
 
 	public BeanLifecycle(){
-		System.out.println("构造函数执行");
+		System.out.println("1.[bean级别]构造函数执行");
 	}
 
 	@Override
 	public void setBeanName(String name) {
-		System.out.println("设置bean名称");
+		System.out.println("2.[bean级别],设置bean名称");
 	}
 
 	@Override
@@ -30,12 +30,9 @@ public class BeanLifecycle implements BeanNameAware, InitializingBean, Disposabl
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		System.out.println("设置applicationContext");
+		System.out.println("3.[bean级别]设置applicationContext");
 	}
 
-	public static void main(String[] args) {
-
-	}
 
 	public void sayHello() {
 		System.out.println("sayHello");
